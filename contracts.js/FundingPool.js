@@ -3,5 +3,9 @@
 
 export default class FundingPool
 {
-  
+  withdraw() {
+    // TODO:
+    // make sure sender is the owner (DAO)
+    // transfer funds
+  }
 }

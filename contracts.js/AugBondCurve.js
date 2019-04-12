@@ -1,34 +1,73 @@
 var assert = require("assert");
 
+export enum Phase {
+  Hatch,
+  Open
+};
+
 export default class AugBondCurve
 {
   constructor(
-    k = 4,
-    theta = 35, // initial funding pool allocation
-    d0 = 3e6,   // initial raise xDAI
-    p0 = 0.01   // initial price xDAI
+    k = 6,
+    // theta (funding pool allocation %)
+    initialAllocation = 35,
+    // d0 (DAI)
+    initialRaise = 3e6,
+    // P0 (DAI per token)
+    initialPrice = 0.01
   ) {
     assert(theta <= 100 && theta >= 0);
 
+    // Properties
     this.k = k;
-    this.theta = theta;
-    this.d0 = d0;
-    this.p0 = p0;
+    this.initialAllocation = initialAllocation;
+    this.initialRaise = initialRaise;
+    this.initialPrice = initialPrice;
+    this.phase = Phase.Hatch;
   }
 
-  // initial reserve, xDAI
-  get r0() {
-    return (1 - this.theta / 100) * this.d0;
+  // Views
+  // r0 (DAI)
+  get initialReserve() {
+    return (1 - (this.initialAllocation / 100)) * this.initialRaise;
   }
 
-  // initial supply, tokens
-  get s0() {
-    return this.d0 / this.p0;
+  // s0 (Tokens)
+  get initialSupply() {
+    return this.initialRaise / this.initialPrice;
   }
 
-  // invariant coefficient
-  get v0() {
-    return this.s0 ** k / this.r0;
+  // v0
+  get invarCoeff() {
+    return (this.initialSupply ** this.k) / this.initialReserve;
+  }
+
+  // p1 (DAI)
+  get postHatchPrice() {
+    return (
+      this.k * (this.initialReserve ** ((this.k - 1) / k))
+    ) / (
+      this.invarCoeff ** (1 / k)
+    );
+  }
+
+  // TODO: price function
+
+  // Tx Methods
+  buy() {
+    // TODO:
+    // % (initialAllocation/100) into funding pool, rest in reserve pool
+    // return tokens minted from reserve to the sender
+    // TODO:
+    // once hatch goal is met, transition into open phase (should phase be in the reserve pool?)
+  }
+
+  sell() {
+    // TODO:
+    // make sure tokens are unlocked & vested
+    // sell tokens back to reserve pool
+    // take % off of DAI returned and give to funding pool
+    // 
   }
 }
 
@@ -37,7 +76,7 @@ export default class AugBondCurve
 var market = new AugBondCurve();
 
 // TODO: how does it transition from the hatch phase into the open phase
-market.phase() -> "hatch" -> "open"
+market.phase() -> Hatch | Open
 
 // TODO: buying (different in each phase?) (what's returned?)
 market.buy(...)
