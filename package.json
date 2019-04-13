@@ -3,12 +3,26 @@
   "version": "0.1.0",
   "main": "src/index.js",
   "dependencies": {
-    "@giveth/commons-abc-contracts": "^0.1.0",
+    "@giveth/commons-abc-contracts": "^0.1.11",
     "bn.js": "^4.11.8",
     "web3": "^1.0.0-beta.52"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
+    "dotenv": "^7.0.0",
+    "ganache-cli": "^6.4.2",
+    "mocha": "^6.1.3",
+    "truffle": "^5.0.12",
+    "truffle-hdwallet-provider": "^1.0.6",
+    "truffle-privatekey-provider": "^1.1.0",
+    "wait-on": "^3.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "ganache": "npm explore @giveth/commons-abc-contracts -- npm run ganache",
+    "deploy": "npm explore @giveth/commons-abc-contracts -- npm run deploy",
+    "deploy:test": "npm run deploy && npm run test",
+    "ci": "concurrently 'npm:ganache' 'npm:deploy:test'"
   }
 }

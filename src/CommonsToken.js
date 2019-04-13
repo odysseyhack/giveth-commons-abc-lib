@@ -3,7 +3,7 @@ var utils = require("./utils");
 var Web3 = require("./Web3");
 var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
 
-export default class CommonsToken
+class CommonsToken
 {
   constructor(
     address
@@ -11,7 +11,7 @@ export default class CommonsToken
     let web3 = Web3.getWeb3();
 
     assert(web3);
-    assert(web3.isAddress(address));
+    assert(web3.utils.isAddress(address));
 
     this.contract = web3.eth.Contract(
       abi, address, utils.getWeb3Options(web3)
@@ -44,3 +44,7 @@ export default class CommonsToken
     );
   }
 }
+
+module.exports = {
+  CommonsToken
+};
