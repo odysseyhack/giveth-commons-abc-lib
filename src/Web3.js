@@ -24,6 +24,6 @@ module.exports = {
       transaction.call({ from: sender.address })
         .then(result => resolve(result))
         .catch(err => reject(err));
-    })
+    });
   }
 }

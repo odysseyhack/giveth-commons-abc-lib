@@ -6,7 +6,6 @@ var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.js
 class CommonsToken
 {
   constructor(
-    sender,
     address
   ) {
     const web3 = Web3.getWeb3();
@@ -15,7 +14,7 @@ class CommonsToken
     assert(web3.utils.isAddress(address));
 
     this.contract = web3.eth.Contract(
-      abi.abi, address, utils.getWeb3Options(sender)
+      abi.abi, address
     );
   }
 
@@ -49,7 +48,7 @@ class CommonsToken
         utils.getWeb3Options(sender)
       ).on("receipt",
         receipt => resolve(
-          new CommonsToken(sender, receipt.contractAddress)
+          new CommonsToken(receipt.contractAddress)
         )
       ).on("error",
         err => reject(err)
@@ -59,11 +58,50 @@ class CommonsToken
 
   reserveRatio(sender) {
     const method = this.contract.methods.reserveRatio();
-    console.log(method);
     return Web3.callView(sender, method);
   }
 
-  mint(sender, amount) {
+  totalSupply(sender) {
+    const method = this.contract.methods.totalSupply();
+    return Web3.callView(sender, method);
+  }
+
+  isInHatchingPhase(sender) {
+    const method = this.contract.methods.isInHatchingPhase();
+    return Web3.callView(sender, method);
+  }
+
+  p0(sender) {
+    const method = this.contract.methods.p0();
+    return Web3.callView(sender, method);
+  }
+
+  theta(sender) {
+    const method = this.contract.methods.theta();
+    return Web3.callView(sender, method);
+  }
+
+  raised(sender) {
+    const method = this.contract.methods.raised();
+    return Web3.callView(sender, method);
+  }
+
+  reserveToken(sender) {
+    const method = this.contract.methods.reserveToken();
+    return Web3.callView(sender, method);
+  }
+
+  fundingPool(sender) {
+    const method = this.contract.methods.fundingPool();
+    return Web3.callView(sender, method);
+  }
+
+  friction(sender) {
+    const method = this.contract.methods.friction();
+    return Web3.callView(sender, method);
+  }
+
+  /*mint(sender, amount) {
     const method = this.contract.methods.mint();
 
     return Web3.sendTransaction(
@@ -71,7 +109,7 @@ class CommonsToken
         amount
       }
     );
-  }
+  }*/
 }
 
 module.exports = {

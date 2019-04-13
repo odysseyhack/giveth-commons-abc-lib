@@ -4,11 +4,12 @@
 // - contracts deployed
 // - initLibrary (web3Provider, contractAddresses)
 // - create CommonsToken class
-var expect = require("chai").expect;
-var ABC = require("../src");
-var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
+const expect = require("chai").expect;
+const ABC = require("../src");
+const abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
 
 describe("CommonToken", function () {
+  var networkId;
   var address;
   var sender;
 
@@ -24,12 +25,12 @@ describe("CommonToken", function () {
     );
 
     // get address of CommonToken
-    var networkId = await web3.eth.net.getId();
+    networkId = await web3.eth.net.getId();
     address = abi.networks[networkId].address;
   });
 
   it("constructor", () => {
-    const contract = new ABC.CommonsToken(sender, address);
+    const contract = new ABC.CommonsToken(address);
     expect(contract).to.not.be.null;
   });
 
@@ -48,21 +49,64 @@ describe("CommonToken", function () {
     expect(contract).to.not.be.null;
   });
 
-  it("reserveRatio", async () => {
-    const contract = new ABC.CommonsToken(sender, address);
+  it("reserveRatio should be 142857 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
     expect(await contract.reserveRatio(sender)).to.be.equal(142857);
+  });
+
+  it("totalSupply should be 0 when nothing is minted", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.totalSupply(sender)).toNumber()).to.be.equal(0);
+  });
+
+  // TODO: mint tokens then make sure totalSupply is updated properly
+
+  it("isInHatchingPhase should be true by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect(await contract.isInHatchingPhase(sender)).to.be.equal(true);
+  });
+
+  // TODO: make sure isInHatchingPhase is false when we purchase all of the hatch tokens
+
+  it("p0 should be 1 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.p0(sender)).toNumber()).to.be.equal(1);
+  });
+
+  it("theta should be 350000 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.theta(sender)).toNumber()).to.be.equal(350000);
+  });
+
+  it("raised should be 0 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.raised(sender)).toNumber()).to.be.equal(0);
+  });
+
+  it("reserveToken should be the address of the token by default", async () => {
+    const abi = require("@giveth/commons-abc-contracts/build/contracts/ERC20Mintable.json");
+    const reserveTokenAddr = abi.networks[networkId].address;
+    const contract = new ABC.CommonsToken(address);
+    expect(await contract.reserveToken(sender)).to.be.equal(reserveTokenAddr);
+  });
+
+  it("fundingPool should be the address of the contract by default", async () => {
+    const abi = require("@giveth/commons-abc-contracts/build/contracts/FundingPoolMock.json");
+    const fundingPoolAddr = abi.networks[networkId].address;
+    const contract = new ABC.CommonsToken(address);
+    expect(await contract.fundingPool(sender)).to.be.equal(fundingPoolAddr);
+  });
+
+  it("friction should be 20000 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.friction(sender)).toNumber()).to.be.equal(20000);
   });
 });
 
 /// HIGH-PRI
 /// VIEWS
-// reserveRatio view (should be 142857)
-// totalSupply view (should be how mahy tokens are minted)
-// isInHatchingPhase view (should be true)
-// p0 view (should be 1)
-
-// theta
 // calculatePurchaseReturn
+
 // increaseAllowance
 // calculateSaleReturn
 // version
@@ -70,14 +114,10 @@ describe("CommonToken", function () {
 // balanceOf
 // poolBalance
 // calculateCurvedMintReturn
-// friction
 // decreaseAllowance
 // transfer
 // allowance
 // initialRaise
-// raised
-// reserveToken
-// fundingPool
 // gasPrice
 // CurvedMint
 // CurvedBurn
