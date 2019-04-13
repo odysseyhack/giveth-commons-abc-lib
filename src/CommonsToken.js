@@ -86,6 +86,11 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
+  initialRaise(sender) {
+    const method = this.contract.methods.initialRaise();
+    return Web3.callView(sender, method);
+  }
+
   reserveToken(sender) {
     const method = this.contract.methods.reserveToken();
     return Web3.callView(sender, method);
@@ -101,6 +106,16 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
+  gasPrice(sender) {
+    const method = this.contract.methods.gasPrice();
+    return Web3.callView(sender, method);
+  }
+
+  poolBalance(sender) {
+    const method = this.contract.methods.poolBalance();
+    return Web3.callView(sender, method);
+  }
+
   calculateCurvedMintReturn(sender, amount) {
     const method = this.contract.methods.calculateCurvedMintReturn(amount);
     return Web3.callView(sender, method);
@@ -108,6 +123,16 @@ class CommonsToken
 
   calculateCurvedBurnReturn(sender, amount) {
     const method = this.contract.methods.calculateCurvedBurnReturn(amount);
+    return Web3.callView(sender, method);
+  }
+
+  allowance(sender, owner, spender) {
+    const method = this.contract.methods.allowance(owner, spender);
+    return Web3.callView(sender, method);
+  }
+
+  balanceOf(sender, owner) {
+    const method = this.contract.methods.balanceOf(owner);
     return Web3.callView(sender, method);
   }
 

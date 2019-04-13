@@ -1,9 +1,3 @@
-// TODO:
-// - web3 local provider
-// - default account
-// - contracts deployed
-// - initLibrary (web3Provider, contractAddresses)
-// - create CommonsToken class
 const expect = require("chai").expect;
 const ABC = require("../src");
 const abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
@@ -83,6 +77,11 @@ describe("CommonToken", function () {
     expect((await contract.raised(sender)).toNumber()).to.be.equal(0);
   });
 
+  it("initialRaise should be 300000 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.initialRaise(sender)).toNumber()).to.be.equal(300000);
+  });
+
   it("reserveToken should be the address of the token by default", async () => {
     const abi = require("@giveth/commons-abc-contracts/build/contracts/ERC20Mintable.json");
     const reserveTokenAddr = abi.networks[networkId].address;
@@ -102,6 +101,18 @@ describe("CommonToken", function () {
     expect((await contract.friction(sender)).toNumber()).to.be.equal(20000);
   });
 
+  it("gassPrice should be 15000000000 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.gasPrice(sender)).toNumber()).to.be.equal(15000000000);
+  });
+
+  it("poolBalance should be 0 by default", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.poolBalance(sender)).toNumber()).to.be.equal(0);
+  });
+
+  // TODO: make sure poolBalance updates after buying
+
   it("calculateCurvedMintReturn should return a value", async () => {
     const contract = new ABC.CommonsToken(address);
     // TODO: throws because supply not greater than 0
@@ -113,19 +124,32 @@ describe("CommonToken", function () {
     // TODO: throws because supply not greater than 0
     expect((await contract.calculateCurvedBurnReturn(sender, 123)).toNumber()).to.be.above(0);
   });
+
+  it("allowance should be 0 if non given", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.allowance(
+      sender,
+      "0x9cc1178903036bfb0115a0fe584e910f07e60ad8",
+      "0x6a287e50838fb82cb9294438665fb806781c8d25"
+    )).toNumber()).to.be.equal(0);
+  });
+
+  // TODO: give allowance to someone
+
+  it("balanceOf should be 0 for non-holder", async () => {
+    const contract = new ABC.CommonsToken(address);
+    expect((await contract.balanceOf(
+      sender, "0x9cc1178903036bfb0115a0fe584e910f07e60ad8"
+    )).toNumber()).to.be.equal(0);
+  });
+
+  // TODO: check balance of non-holder
 });
 
 /// HIGH-PRI
 /// VIEWS
-// initialRaise
-// gasPrice
-// fundsAllocated
-// calculateSaleReturn
-// version
-// poolBalance
-// allowance
-// balanceOf
 
+// fundsAllocated
 // increaseAllowance
 // decreaseAllowance
 // transfer
