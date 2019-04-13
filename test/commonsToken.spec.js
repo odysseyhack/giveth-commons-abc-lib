@@ -101,30 +101,39 @@ describe("CommonToken", function () {
     const contract = new ABC.CommonsToken(address);
     expect((await contract.friction(sender)).toNumber()).to.be.equal(20000);
   });
+
+  it("calculateCurvedMintReturn should return a value", async () => {
+    const contract = new ABC.CommonsToken(address);
+    // TODO: throws because supply not greater than 0
+    expect((await contract.calculateCurvedMintReturn(sender, 123)).toNumber()).to.be.above(0);
+  });
+
+  it("calculateCurvedBurnReturn should return a value", async () => {
+    const contract = new ABC.CommonsToken(address);
+    // TODO: throws because supply not greater than 0
+    expect((await contract.calculateCurvedBurnReturn(sender, 123)).toNumber()).to.be.above(0);
+  });
 });
 
 /// HIGH-PRI
 /// VIEWS
-// calculatePurchaseReturn
-
-// increaseAllowance
-// calculateSaleReturn
-// version
-// calculateCurvedBurnReturn
-// balanceOf
-// poolBalance
-// calculateCurvedMintReturn
-// decreaseAllowance
-// transfer
-// allowance
 // initialRaise
 // gasPrice
+// fundsAllocated
+// calculateSaleReturn
+// version
+// poolBalance
+// allowance
+// balanceOf
+
+// increaseAllowance
+// decreaseAllowance
+// transfer
 // CurvedMint
 // CurvedBurn
 // mint
 // burn
 // hatchContribute
-// fundsAllocated
 // claimTokens
 
 /// MISC

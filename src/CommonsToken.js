@@ -101,6 +101,16 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
+  calculateCurvedMintReturn(sender, amount) {
+    const method = this.contract.methods.calculateCurvedMintReturn(amount);
+    return Web3.callView(sender, method);
+  }
+
+  calculateCurvedBurnReturn(sender, amount) {
+    const method = this.contract.methods.calculateCurvedBurnReturn(amount);
+    return Web3.callView(sender, method);
+  }
+
   /*mint(sender, amount) {
     const method = this.contract.methods.mint();
 
