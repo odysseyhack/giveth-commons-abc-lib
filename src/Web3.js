@@ -9,3 +9,11 @@ export function initWeb3(provider) {
 export function getWeb3() {
   return web3;
 }
+
+export function sendTransaction(transaction, args) {
+  return new Promise((resolve, reject) => {
+    transaction.send(...args)
+      .then(result => resolve(result))
+      .catch(err => reject(err));
+  });
+}

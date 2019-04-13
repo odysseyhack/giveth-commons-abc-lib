@@ -1,6 +1,6 @@
 var assert = require("assert");
 var utils = require("./utils");
-var getWeb3 = require("./Web3").getWeb3;
+var Web3 = require("./Web3");
 var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
 
 export default class CommonsToken
@@ -8,7 +8,7 @@ export default class CommonsToken
   constructor(
     address
   ) {
-    let web3 = getWeb3();
+    let web3 = Web3.getWeb3();
 
     assert(web3);
     assert(web3.isAddress(address));
@@ -18,5 +18,29 @@ export default class CommonsToken
     );
   }
 
-  // TODO: view, transaction (w/ event & return value)
+  initialize(
+    reserveToken,
+    reserveRatio,
+    theta,
+    p0,
+    initialRaise,
+    fundingPool,
+    friction,
+    gasPrice
+  ) {
+    const method = this.contract.methods.initialize();
+
+    return Web3.sendTransaction(
+      method, {
+        reserveToken,
+        reserveRatio,
+        theta,
+        p0,
+        initialRaise,
+        fundingPool,
+        friction,
+        gasPrice
+      }
+    );
+  }
 }
