@@ -14,32 +14,16 @@ class CommonsToken
     assert(web3.utils.isAddress(address));
 
     this.contract = web3.eth.Contract(
-      abi, address, utils.getWeb3Options(web3)
+      abi.abi, address, utils.getWeb3Options(web3)
     );
   }
 
-  initialize(
-    reserveToken,
-    reserveRatio,
-    theta,
-    p0,
-    initialRaise,
-    fundingPool,
-    friction,
-    gasPrice
-  ) {
-    const method = this.contract.methods.initialize();
+  mint(amount) {
+    const method = this.contract.methods.mint();
 
     return Web3.sendTransaction(
       method, {
-        reserveToken,
-        reserveRatio,
-        theta,
-        p0,
-        initialRaise,
-        fundingPool,
-        friction,
-        gasPrice
+        amount
       }
     );
   }

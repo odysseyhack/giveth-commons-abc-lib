@@ -6,15 +6,19 @@
 // - create CommonsToken class
 var expect = require("chai").expect;
 var ABC = require("../src");
+var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.json");
 
-describe("CommonToken Tests", () => {
-  before(() => {
+describe("CommonToken", () => {
+  var address;
+
+  before(async () => {
     ABC.initWeb3("http://localhost:8545");
+    var networkId = await ABC.getWeb3().eth.net.getId();
+    address = abi.networks[networkId].address;
   });
 
-  it("does a thing", () => {
-    const contract = new ABC.CommonsToken("0xaddress...");
-
-
+  it("constructor", () => {
+    const contract = new ABC.CommonsToken(address);
+    expect(contract).to.not.be.null;
   });
 });
