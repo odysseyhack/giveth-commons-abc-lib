@@ -11,11 +11,19 @@ module.exports = {
     return web3;
   },
 
-  sendTransaction: (transaction, args) => {
+  sendTransaction: (sender, transaction) => {
     return new Promise((resolve, reject) => {
-      transaction.send(...args)
+      transaction.send({ from: sender.address })
         .then(result => resolve(result))
         .catch(err => reject(err));
     });
+  },
+
+  callView: (sender, transaction) => {
+    return new Promise((resolve, reject) => {
+      transaction.call({ from: sender.address })
+        .then(result => resolve(result))
+        .catch(err => reject(err));
+    })
   }
 }

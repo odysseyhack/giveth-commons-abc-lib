@@ -5,11 +5,8 @@ var abi = require("@giveth/commons-abc-contracts/build/contracts/CommonsToken.js
 
 class CommonsToken
 {
-  constructor(contract) {
-    this.contract = contract;
-  }
-
-  static fromAddress(
+  constructor(
+    sender,
     address
   ) {
     const web3 = Web3.getWeb3();
@@ -17,14 +14,13 @@ class CommonsToken
     assert(web3);
     assert(web3.utils.isAddress(address));
 
-    const contract = web3.eth.Contract(
-      abi.abi, address, utils.getWeb3Options(web3)
+    this.contract = web3.eth.Contract(
+      abi.abi, address, utils.getWeb3Options(sender)
     );
-
-    return new CommonsToken(contract);
   }
 
-  static fromParams(
+  static deploy(
+    sender,
     reserveToken,
     reserveRatio,
     gasPrice,
@@ -35,26 +31,39 @@ class CommonsToken
     friction
   ) {
     const web3 = Web3.getWeb3();
-    const toDeploy = web3.eth.contract(abi.abi);
 
-    const contract = toDeploy.new(
-      reserveToken,
-      reserveRatio,
-      gasPrice,
-      theta,
-      p0,
-      initialRaise,
-      fundingPool,
-      friction, {
-        from: web3.defaultAccount,
-        data: abi.bytecode
-      }
-    );
-
-    return new CommonsToken(contract);
+    return new Promise((resolve, reject) => {
+      return web3.eth.Contract(abi.abi).deploy({
+        data: abi.bytecode,
+        arguments: [
+          reserveToken,
+          reserveRatio,
+          gasPrice,
+          theta,
+          p0,
+          initialRaise,
+          fundingPool,
+          friction
+        ]
+      }).send(
+        utils.getWeb3Options(sender)
+      ).on("receipt",
+        receipt => resolve(
+          new CommonsToken(sender, receipt.contractAddress)
+        )
+      ).on("error",
+        err => reject(err)
+      );
+    });
   }
 
-  mint(amount) {
+  reserveRatio(sender) {
+    const method = this.contract.methods.reserveRatio();
+    console.log(method);
+    return Web3.callView(sender, method);
+  }
+
+  mint(sender, amount) {
     const method = this.contract.methods.mint();
 
     return Web3.sendTransaction(

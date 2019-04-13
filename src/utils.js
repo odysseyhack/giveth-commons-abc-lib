@@ -1,12 +1,12 @@
 module.exports = {
-  getWeb3Options: (instance) => {
-    if (!instance.eth.defaultAccount) {
-      console.log("No default account was set, cannot send transaction");
+  getWeb3Options: (account) => {
+    if (!account) {
+      console.log("No account given, cannot send transaction");
     }
 
     return {
-      from: instance.eth.defaultAccount,
-      gas: 6000000
+      from: account.address,
+      gas: 10000000
     };
   }
 };
