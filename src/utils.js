@@ -4,8 +4,16 @@ module.exports = {
       console.log("No account given, cannot send transaction");
     }
 
+    var from;
+
+    if (typeof account === "string") {
+      from = account;
+    } else {
+      from = account.address;
+    }
+
     return {
-      from: account.address,
+      from: from,
       gas: 10000000
     };
   }
