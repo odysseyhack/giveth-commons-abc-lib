@@ -38,7 +38,9 @@ describe("CommonToken", function () {
       1,
       300000,
       "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
-      20000
+      20000,
+      500,
+      2
     );
     expect(contract).to.not.be.null;
   });
@@ -55,12 +57,12 @@ describe("CommonToken", function () {
 
   // TODO: mint tokens then make sure totalSupply is updated properly
 
-  it("isInHatchingPhase should be true by default", async () => {
+  it("isHatched should be false by default", async () => {
     const contract = new ABC.CommonsToken(address);
-    expect(await contract.isInHatchingPhase(sender)).to.be.equal(true);
+    expect(await contract.isHatched(sender)).to.be.equal(false);
   });
 
-  // TODO: make sure isInHatchingPhase is false when we purchase all of the hatch tokens
+  // TODO: make sure isHatched is false when we purchase all of the hatch tokens
 
   it("p0 should be 1 by default", async () => {
     const contract = new ABC.CommonsToken(address);
@@ -72,9 +74,9 @@ describe("CommonToken", function () {
     expect((await contract.theta(sender)).toNumber()).to.be.equal(350000);
   });
 
-  it("raised should be 0 by default", async () => {
+  it("raisedExternal should be 0 by default", async () => {
     const contract = new ABC.CommonsToken(address);
-    expect((await contract.raised(sender)).toNumber()).to.be.equal(0);
+    expect((await contract.raisedExternal(sender)).toNumber()).to.be.equal(0);
   });
 
   it("initialRaise should be 300000 by default", async () => {

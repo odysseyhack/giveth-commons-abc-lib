@@ -27,7 +27,9 @@ class CommonsToken
     p0,
     initialRaise,
     fundingPool,
-    friction
+    friction,
+    duration,
+    minExternalContribution
   ) {
     const web3 = Web3.getWeb3();
 
@@ -42,7 +44,9 @@ class CommonsToken
           p0,
           initialRaise,
           fundingPool,
-          friction
+          friction,
+          duration,
+          minExternalContribution
         ]
       }).send(
         utils.getWeb3Options(sender)
@@ -66,8 +70,8 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
-  isInHatchingPhase(sender) {
-    const method = this.contract.methods.isInHatchingPhase();
+  isHatched(sender) {
+    const method = this.contract.methods.isHatched();
     return Web3.callView(sender, method);
   }
 
@@ -81,8 +85,8 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
-  raised(sender) {
-    const method = this.contract.methods.raised();
+  raisedExternal(sender) {
+    const method = this.contract.methods.raisedExternal();
     return Web3.callView(sender, method);
   }
 
@@ -92,7 +96,7 @@ class CommonsToken
   }
 
   reserveToken(sender) {
-    const method = this.contract.methods.reserveToken();
+    const method = this.contract.methods.externalToken();
     return Web3.callView(sender, method);
   }
 
