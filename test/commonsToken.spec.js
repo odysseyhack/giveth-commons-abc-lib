@@ -146,6 +146,34 @@ describe("CommonToken", function () {
   });
 
   // TODO: check balance of non-holder
+
+  it("mint should fail if not hatched", async () => {
+    const contract = new ABC.CommonsToken(address);
+    try {
+      await contract.mint(sender, 234234234234234);
+      expect(false).to.be.equal(true);
+    } catch { }
+  });
+
+  it("burn should fail if not hatched", async () => {
+    const contract = new ABC.CommonsToken(address);
+    try {
+      await contract.burn(sender, 234234234234);
+      expect(false).to.be.equal(true);
+    } catch { }
+  });
+
+  // TODO: mint and burn for real
+
+  it("hatchContribute fails when contribution is too low", async () => {
+    const contract = new ABC.CommonsToken(address);
+    try {
+      await contract.hatchContribute(sender, 20000);
+      expect(false).to.be.equal(true);
+    } catch { }
+  });
+
+  // TODO: hatchContribute for real
 });
 
 /// HIGH-PRI

@@ -140,15 +140,20 @@ class CommonsToken
     return Web3.callView(sender, method);
   }
 
-  /*mint(sender, amount) {
-    const method = this.contract.methods.mint();
+  mint(sender, amount) {
+    const method = this.contract.methods.mint(amount);
+    return Web3.sendTransaction(sender, method);
+  }
 
-    return Web3.sendTransaction(
-      method, {
-        amount
-      }
-    );
-  }*/
+  burn(sender, amount) {
+    const method = this.contract.methods.burn(amount);
+    return Web3.sendTransaction(sender, method);
+  }
+
+  hatchContribute(sender, amount) {
+    const method = this.contract.methods.hatchContribute(amount);
+    return Web3.sendTransaction(sender, method);
+  }
 }
 
 module.exports = {
