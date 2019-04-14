@@ -1,6 +1,6 @@
 {
   "name": "@giveth/commons-abc-lib",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "src/index.js",
   "dependencies": {
     "@giveth/commons-abc-contracts": "^0.2.0",
@@ -19,10 +19,10 @@
     "wait-on": "^3.2.0"
   },
   "scripts": {
+    "ci": "concurrently 'npm:ganache' 'npm:deploy:test'",
     "test": "./node_modules/.bin/mocha --reporter spec",
     "ganache": "npm explore @giveth/commons-abc-contracts -- npm run ganache",
     "deploy": "npm explore @giveth/commons-abc-contracts -- npm run deploy",
-    "deploy:test": "npm run deploy && npm run test",
-    "ci": "concurrently 'npm:ganache' 'npm:deploy:test'"
+    "deploy:test": "npm run deploy && npm run test"
   }
 }

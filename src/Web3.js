@@ -1,4 +1,5 @@
 const Web3 = require("web3");
+const utils = require("./utils");
 
 let web3 = null;
 
@@ -13,7 +14,7 @@ module.exports = {
 
   sendTransaction: (sender, transaction) => {
     return new Promise((resolve, reject) => {
-      transaction.send({ from: sender.address })
+      transaction.send(utils.getWeb3Options(sender))
         .then(result => resolve(result))
         .catch(err => reject(err));
     });
@@ -21,7 +22,7 @@ module.exports = {
 
   callView: (sender, transaction) => {
     return new Promise((resolve, reject) => {
-      transaction.call({ from: sender.address })
+      transaction.call(utils.getWeb3Options(sender))
         .then(result => resolve(result))
         .catch(err => reject(err));
     });
