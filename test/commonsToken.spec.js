@@ -55,14 +55,10 @@ describe("CommonToken", function () {
     expect((await contract.totalSupply(sender)).toNumber()).to.be.equal(0);
   });
 
-  // TODO: mint tokens then make sure totalSupply is updated properly
-
   it("isHatched should be false by default", async () => {
     const contract = new ABC.CommonsToken(address);
     expect(await contract.isHatched(sender)).to.be.equal(false);
   });
-
-  // TODO: make sure isHatched is false when we purchase all of the hatch tokens
 
   it("p0 should be 1 by default", async () => {
     const contract = new ABC.CommonsToken(address);
@@ -113,17 +109,13 @@ describe("CommonToken", function () {
     expect((await contract.poolBalance(sender)).toNumber()).to.be.equal(0);
   });
 
-  // TODO: make sure poolBalance updates after buying
-
   it("calculateCurvedMintReturn should return a value", async () => {
     const contract = new ABC.CommonsToken(address);
-    // TODO: throws because supply not greater than 0
     expect((await contract.calculateCurvedMintReturn(sender, 123)).toNumber()).to.be.above(0);
   });
 
   it("calculateCurvedBurnReturn should return a value", async () => {
     const contract = new ABC.CommonsToken(address);
-    // TODO: throws because supply not greater than 0
     expect((await contract.calculateCurvedBurnReturn(sender, 123)).toNumber()).to.be.above(0);
   });
 
@@ -136,16 +128,12 @@ describe("CommonToken", function () {
     )).toNumber()).to.be.equal(0);
   });
 
-  // TODO: give allowance to someone
-
   it("balanceOf should be 0 for non-holder", async () => {
     const contract = new ABC.CommonsToken(address);
     expect((await contract.balanceOf(
       sender, "0x9cc1178903036bfb0115a0fe584e910f07e60ad8"
     )).toNumber()).to.be.equal(0);
   });
-
-  // TODO: check balance of non-holder
 
   it("mint should fail if not hatched", async () => {
     const contract = new ABC.CommonsToken(address);
@@ -163,8 +151,6 @@ describe("CommonToken", function () {
     } catch { }
   });
 
-  // TODO: mint and burn for real
-
   it("hatchContribute fails when contribution is too low", async () => {
     const contract = new ABC.CommonsToken(address);
     try {
@@ -172,26 +158,4 @@ describe("CommonToken", function () {
       expect(false).to.be.equal(true);
     } catch { }
   });
-
-  // TODO: hatchContribute for real
 });
-
-/// HIGH-PRI
-/// VIEWS
-
-// fundsAllocated
-// increaseAllowance
-// decreaseAllowance
-// transfer
-// CurvedMint
-// CurvedBurn
-// mint
-// burn
-// hatchContribute
-// claimTokens
-
-/// MISC
-// approve(address spender, uint value) => (true/false)
-// Approval event(sender, spender, value)
-// transferFrom(address from, address to, uint value)
-// Approval event(from, msg.sender, value)
