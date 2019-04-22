@@ -1,13 +1,12 @@
 {
   "name": "@giveth/commons-abc-lib",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "src/index.js",
   "dependencies": {
-    "@giveth/commons-abc-contracts": "^0.2.0",
-    "bn.js": "^4.11.8",
-    "web3": "^1.0.0-beta.52"
+    "bn.js": "^4.11.8"
   },
   "devDependencies": {
+    "@giveth/commons-abc-contracts": "^0.2.0",
     "chai": "^4.2.0",
     "concurrently": "^4.1.0",
     "dotenv": "^7.0.0",
@@ -16,7 +15,13 @@
     "truffle": "^5.0.12",
     "truffle-hdwallet-provider": "^1.0.6",
     "truffle-privatekey-provider": "^1.1.0",
-    "wait-on": "^3.2.0"
+    "wait-on": "^3.2.0",
+    "web3": "^1.0.0-beta.52"
+
+  },
+  "peerDependencies": {
+    "@giveth/commons-abc-contracts": "^0.2.0",
+    "web3": "^1.0.0-beta.52"
   },
   "scripts": {
     "ci": "concurrently 'npm:ganache' 'npm:deploy:test'",
